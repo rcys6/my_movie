@@ -26,7 +26,8 @@ def movie_list(request):
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
 
-class MovieDetail(APIView):
+# 手动的
+class MovieDetailFiger(APIView):
     # drf对象，主键
     def get(self,request,pk):
         try:
@@ -63,24 +64,24 @@ class MovieDetail(APIView):
 
 # /api/movie 接口
 # 通用类
-# class MovieDetail(generics.GenericAPIView,
-#                   mixins.RetrieveModelMixin,
-#                   mixins.DestroyModelMixin,
-#                   mixins.UpdateModelMixin):
+class MovieDetail(generics.GenericAPIView,
+                  mixins.RetrieveModelMixin,
+                  mixins.DestroyModelMixin,
+                  mixins.UpdateModelMixin):
 
-#     queryset=Movie.objects.all()
-#     serializer_class=MovieDetailSerializer
+    queryset=Movie.objects.all()
+    serializer_class=MovieDetailSerializer
 
-#     def get(self,request,*args,**kwargs):
-#         return self.retrieve(request,*args,**kwargs)
-#     # 部分修改
-#     def put(self,request,*args,**kwargs):
-#         return self.partial_update(request,*args,**kwargs)
+    def get(self,request,*args,**kwargs):
+        return self.retrieve(request,*args,**kwargs)
+    # 部分修改
+    def put(self,request,*args,**kwargs):
+        return self.partial_update(request,*args,**kwargs)
     
-#     def delete(self,request,*args,**kwargs):
-#         return self.destroy(request,*args,**kwargs)
+    def delete(self,request,*args,**kwargs):
+        return self.destroy(request,*args,**kwargs)
 
-# class MovieViewSet(viewsets.ModelViewSet):
+class MovieViewSet(viewsets.ModelViewSet):
     queryset=Movie.objects.all()
     serializer_class=MovieSerializer
 

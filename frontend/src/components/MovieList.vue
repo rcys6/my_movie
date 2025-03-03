@@ -3,15 +3,15 @@
         <div class="w-full px-2" style="max-width:1440px;">
             <div id="movie-list" class="p-2 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
                 <!-- key 来提供排序提升 -->
-                <div class="movie" v-for="movie in info" :key="movie.id">
+                <div class="movie" v-for="movie in info.results" :key="movie.id">
                     <a href=""> 
                         <div class="relative">
-                            <div class="movies">
+                            <div v-if="movie.image_url" class="cover">
                                 <img :src="movie.image_url"  alt="" class="rounded h-full w-full">
                             </div>
-                            <!-- <div v-else>
+                            <div v-else>
                                 <img src="" alt="" class="rounded h-full w-full">
-                            </div> -->
+                            </div>
                             <div v-if="movie.is_top" class="rounded absolute top-0 bg-purple-600 px-1 text-sm">
                                 置顶
                             </div>
@@ -47,16 +47,30 @@ export default {
     },
 
     mounted() { // axios发送请求
-        axios
-            .get('/api/movies/')
-
-            // 处理结果
-            .then( response => (this.info = response.data ))
-            // 处理错误
-            .catch (error=>{
-                console.log(error)
-            })
+        this.get_movie_data()
     },
+
+    methods:{
+        get_movie_data:function(){
+            let url="/api/movies"
+            const page=Number(this.$route.query.page)
+            if (!isNaN(page)|| page!==0)
+            {
+                url=url+'/?page='+page
+            }
+
+
+            axios
+                .get(url)
+
+                // 处理结果
+                .then( response => (this.info = response.data ))
+                // 处理错误
+                .catch (error=>{
+                    console.log(error)
+                })
+        }
+    }
 
 }
     

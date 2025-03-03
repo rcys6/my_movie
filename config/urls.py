@@ -20,13 +20,13 @@ from rest_framework.routers import DefaultRouter
 
 from movie import views
 
-# router = DefaultRouter()
-# router.register(r'movies',views.MovieViewSet)
+router = DefaultRouter()
+router.register(r'movies',views.MovieViewSet)
 
 
 urlpatterns = [
-    path('api/movies/',include("movie.urls")),
-    # path('api/',include(router.urls)),
+    # path('api/movies/',include("movie.urls")),
+    path('api/',include(router.urls)),
     path('admin/', admin.site.urls),
     
 ]
