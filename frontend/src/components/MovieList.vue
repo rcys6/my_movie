@@ -4,7 +4,7 @@
             <div id="movie-list" class="p-2 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
                 <!-- key 来提供排序提升 -->
                 <div class="movie" v-for="movie in info.results" :key="movie.id">
-                    <a href=""> 
+                    <a :href="'/movie/'+movie.id"> 
                         <div class="relative">
                             <div v-if="movie.image_url" class="cover">
                                 <img :src="movie.image_url"  alt="" class="rounded h-full w-full">
@@ -33,13 +33,19 @@
             </div>  
         </div>
     </div>
+    <!-- 数据传入子组件 -->
+    <Page :info="info"/>
 </template>
 
 <script>
 import axios from 'axios'
+import Page from '@/components/Page.vue'
+
 
 export default {
     name:'MovieList',
+    components: { Page },
+
     data: function() {  //定义数据
         return {
             info:''
@@ -50,15 +56,16 @@ export default {
         this.get_movie_data()
     },
 
+    // 函数
     methods:{
+        //处理url
         get_movie_data:function(){
             let url="/api/movies"
             const page=Number(this.$route.query.page)
-            if (!isNaN(page)|| page!==0)
+            if (!isNaN(page) && page!== 0)
             {
                 url=url+'/?page='+page
             }
-
 
             axios
                 .get(url)
@@ -70,8 +77,14 @@ export default {
                     console.log(error)
                 })
         }
-    }
+    },
 
+    watch:{
+        //监听路由
+        $route(){
+            this.get_movie_data()
+        }
+    }
 }
     
 </script>
