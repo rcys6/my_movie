@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import generics,mixins,viewsets
-
+from django_filters import rest_framework as filters
 from rest_framework.decorators import api_view
 
 
@@ -81,7 +81,17 @@ class MovieDetail(generics.GenericAPIView,
     def delete(self,request,*args,**kwargs):
         return self.destroy(request,*args,**kwargs)
 
+class MovieFilter(filters.FilterSet):
+    movie_name=filters.CharFilter(lookup_expr='icontains')
+
+    class Meta:
+        model=Movie
+        fields=['movie_name']
+
+
 class MovieViewSet(viewsets.ModelViewSet):
     queryset=Movie.objects.all()
     serializer_class=MovieSerializer
-
+    filter_backends = (filters.DjangoFilterBackend,)
+    # 模糊查询
+    filterset_class=MovieFilter

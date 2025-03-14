@@ -61,11 +61,20 @@ export default {
         //处理url
         get_movie_data:function(){
             let url="/api/movies"
-            const page=Number(this.$route.query.page)
-            if (!isNaN(page) && page!== 0)
+            const page=Number(this.$route.query.page);
+            const search=this.$route.query.search;
+            const params=new URLSearchParams();
+            if (page)
             {
-                url=url+'/?page='+page
+                params.append('page',page)
             }
+            if (search)
+            {
+                params.append('movie_name',search)
+            }
+
+            url = url + '?' + params.toString()
+            // console.log(url)
 
             axios
                 .get(url)
