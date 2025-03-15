@@ -63,6 +63,8 @@ export default {
             let url="/api/movies"
             const page=Number(this.$route.query.page);
             const search=this.$route.query.search;
+            const category=this.$route.query.category_id;
+            const region=this.$route.query.region;
             const params=new URLSearchParams();
             if (page)
             {
@@ -71,6 +73,15 @@ export default {
             if (search)
             {
                 params.append('movie_name',search)
+            }
+
+            if (category)
+            {
+                params.append('category_id',category)
+            }
+            if (region)
+            {
+                params.append('region',region)
             }
 
             url = url + '?' + params.toString()

@@ -2,7 +2,7 @@
     <div id="footer" class="flex items-center justify-center text-gray-500 pb-4">
       <!-- 上一页 -->
       <span class="page-link"   v-if="info.previous" @click="goToPage(prePage)">
-          <button class="w-8 h-8 rounded mx-1 my-1 text-gray-600 bg-gray-500">
+          <button class="w-8 h-8 rounded mx-1 my-1 bg-gray-300">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mx-auto" viewBox="0 0 20 20" fill="currentColor">
                   <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
               </svg>
@@ -88,11 +88,10 @@ export default{
         
         goToPage(page){
             this.current=page
-            // 获取所有参数
+            // 获取当前所有参数
             const params={...this.$route.query};
             
             params.page=page
-            console.log(params)
 
 
             this.$router.push({query:params})

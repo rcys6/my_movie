@@ -7,7 +7,7 @@
           <img  src="../assets/images/logo.jpg" style="height:39px" >
         </a>
         <div id="nav" class="px-4">
-          <category/>
+          <Category/>
         </div>
       </div>
       <!-- 输入框 -->
@@ -21,11 +21,12 @@
                     bg-primary-700
                     border
                     border-gray-600
-                    placeholder-gray-400
+                    placeholder-white
                     w-64
                     px-2
                     py-1
                     max-w-[180px]
+                    text-white
                 "  placeholder="请输入关键词" >
             <div class="
                     absolute
@@ -78,9 +79,13 @@
 </template>
 
 <script>
+
+import Category from './Category.vue'
+
+
 export default{
     name:'Header',
-
+    components:{ Category },
     data:function(){
       return{
         keyword:''

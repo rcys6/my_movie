@@ -8,8 +8,8 @@ from django_filters import rest_framework as filters
 from rest_framework.decorators import api_view
 
 
-from .serializers import MovieListSerializer,MovieDetailSerializer,MovieSerializer
-from .models import Movie
+from .serializers import MovieListSerializer,MovieDetailSerializer,MovieSerializer,CategorySerializer
+from .models import Movie,Category
 
 @api_view(['GET', 'POST'])
 def movie_list(request):
@@ -83,10 +83,12 @@ class MovieDetail(generics.GenericAPIView,
 
 class MovieFilter(filters.FilterSet):
     movie_name=filters.CharFilter(lookup_expr='icontains')
+    category_id=filters.NumberFilter()
+    region=filters.NumberFilter()
 
     class Meta:
         model=Movie
-        fields=['movie_name']
+        fields=['movie_name','category_id','region']
 
 
 class MovieViewSet(viewsets.ModelViewSet):
@@ -95,3 +97,7 @@ class MovieViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.DjangoFilterBackend,)
     # 模糊查询
     filterset_class=MovieFilter
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset=Category.objects.all()
+    serializer_class=CategorySerializer

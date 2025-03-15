@@ -22,6 +22,7 @@ from movie import views
 
 router = DefaultRouter()
 router.register(r'movies',views.MovieViewSet)
+router.register(r'category',views.CategoryViewSet)
 
 
 urlpatterns = [
