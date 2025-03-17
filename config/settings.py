@@ -38,9 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
+    'djoser',  # 用户模块
     'rest_framework',
     'django_filters',
-
+    'account',
     'movie',
     
 ]
@@ -139,4 +140,33 @@ REST_FRAMEWORK = {
         'django_filters.rest_framework.DjangoFilterBackend',
         # ...
     ),
+}
+
+# 邮箱配置
+
+EMAIL_HOST = 'smtp.163.com'
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
+
+
+EMAIL_HOST_PASSWORD = 'PHTptwr49GLZWb8j'
+EMAIL_HOST_USER='rskrongshaokai@163.com'
+DEFAULT_FROM_EMAIL='rskrongshaokai@163.com'
+
+
+
+
+# djsoer 配置
+DJOSER = {
+    'USER_ID_FIELD':'username',
+    'USER_ID_FIELD':'email',
+    'SEND_ACTIVATION_EMAIL':True,
+    'ACTIVATION_URL':'/activate/{uid}/{token}',
+    'SEND_CONFIRMATION_EMAIL':True,
+
+
+    'SERIALIZERS':{
+        "user_create": "account.serializers.CustomUserCreateSerializer",
+    }
+
 }
