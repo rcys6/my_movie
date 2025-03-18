@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import MovieDetail from '../views/MovieDetail.vue'
 import Register from '../views/Register.vue'
+import ActivateEmail from '../views/ActivateEmail.vue'
+import Login from '../views/Login.vue'
 
 const routes = [
   {
@@ -21,6 +23,17 @@ const routes = [
     component: Register
   },
 
+  {
+    path: '/activate/:uid/:token',
+    name: 'ActivateEmail',
+    component: ActivateEmail
+  },
+
+  {
+    path: '/Login',
+    name: 'Login',
+    component: Login
+  },
 
   {
     path: '/about',

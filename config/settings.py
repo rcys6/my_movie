@@ -140,7 +140,17 @@ REST_FRAMEWORK = {
         'django_filters.rest_framework.DjangoFilterBackend',
         # ...
     ),
+
+    # 配置jwt认证
+     'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
 }
+
+SIMPLE_JWT = {
+   'AUTH_HEADER_TYPES': ('JWT',),
+}
+
 
 # 邮箱配置
 
@@ -170,3 +180,5 @@ DJOSER = {
     }
 
 }
+
+

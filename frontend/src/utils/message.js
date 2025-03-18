@@ -2,7 +2,7 @@ import Toastify from 'toastify-js'
 import "toastify-js/src/toastify.css"
 
 
-export default function showMessage(message,status='error'){
+export default function showMessage(message,status='error',Callback_func){
 
     let background_color;
     if(status == 'error' )
@@ -16,7 +16,7 @@ export default function showMessage(message,status='error'){
 
     Toastify({
         text: message,
-        duration: 3000,
+        duration: 2000,
         destination: "https://github.com/apvarun/toastify-js",
         newWindow: true,
         close: true,
@@ -26,6 +26,16 @@ export default function showMessage(message,status='error'){
         style: {
             background: background_color,
         },
+
+        callback:function () {
+            if (!Callback_func) return
+            if (Callback_func)
+            {
+                Callback_func()
+            }
+        },
+
+ 
         onClick: function(){} // Callback after click
         }).showToast();
 }

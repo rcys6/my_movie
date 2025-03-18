@@ -29,6 +29,7 @@ urlpatterns = [
     # path('api/movies/',include("movie.urls")),
     path('api/',include(router.urls)),
     path(r'api/', include('djoser.urls')),
+    path(r'api/', include('djoser.urls.jwt')),
 
     path('admin/', admin.site.urls),
     

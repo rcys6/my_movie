@@ -129,7 +129,7 @@ export default {
                 'password':password,
             }
 
-            let url = '/api/users/'
+            const url = '/api/users/'
             axios
                 .post(url,formData)
                 
