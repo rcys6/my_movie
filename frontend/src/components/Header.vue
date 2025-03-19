@@ -54,7 +54,7 @@
                   <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                 </svg>
               </div>
-              <div :class="{hidden: !showMenu}" id="userinfo_menu" class="absolute top-[40px] w-32 transition ease-in-out delay-150 z-50">
+              <div :class="{ hidden: !showMenu }" id="userinfo_menu" class="absolute top-[40px] w-32 transition ease-in-out delay-150 z-50">
                 <ul class="bg-primary-700 py-2 px-4 text-sm">
                   <li class="plx-2 py-2">
                     <a href="/personal">个人中心</a>
@@ -91,6 +91,7 @@ export default{
       return{
         keyword:'',
         username:'',
+        showMenu:false,
       }
     },
 
@@ -150,7 +151,20 @@ export default{
           name:'home',
           query:{search:keyword}
         })
+      },
+      // 切换展示
+      toggleMenu(){
+        this.showMenu=!this.showMenu
+      },
+
+      // 退出登录
+      logout()
+      {
+        localStorage.clear()
+        this.$store.commit('setLogiStatus',false)
       }
+
     },
+
 }
 </script>
