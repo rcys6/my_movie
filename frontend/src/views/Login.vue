@@ -77,13 +77,14 @@ export default  {
                     const token=response.data.access
                     const refresh=response.data.refresh
                     const username=this.username
+                     
 
                     localStorage.setItem('token',token)
                     localStorage.setItem('refresh',refresh)
                     localStorage.setItem('username',username)
 
-
-                    localStorage.setItem('expiredTime',Date.now() + 1*60*1000)
+                    let mytime = 5 * 60 * 1000
+                    localStorage.setItem('expiredTime',Date.now() + mytime)
 
                     showMessage('登录成功','nomal', ()=>{
                         this.$router.push({ name : 'home'})

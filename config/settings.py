@@ -147,8 +147,13 @@ REST_FRAMEWORK = {
     ),
 }
 
+# 配置jwt
+
+from datetime import timedelta
 SIMPLE_JWT = {
    'AUTH_HEADER_TYPES': ('JWT',),
+   'ACCESS_TOKEN_LIFETIME':timedelta(minutes=60), # 配置访问令牌的生命周期
+   'REFRESH_TOKEN_LIFETIME':timedelta(days=14),   # 刷新令牌的生命周期
 }
 
 

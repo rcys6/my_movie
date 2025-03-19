@@ -80,6 +80,7 @@
 
 <script>
 
+import axios from 'axios'
 import Category from './Category.vue'
 
 
@@ -98,11 +99,44 @@ export default{
 
       const curruntTime=Date.now()
       const expiredTime=localStorage.getItem('expiredTime')
+      const refreshToken=localStorage.getItem('refresh')
+
+      console.log(curruntTime,expiredTime)
+
 
       if(expiredTime > curruntTime) {
         this.$store.commit('setLogiStatus',true)
-      }else {
+      }
+      // 每隔五分钟自动登录
+      else if(refreshToken){
+
+        console.log('执行refresh')
+
+        let url='/api/jwt/refresh/'
+        const formData={
+          refresh:refreshToken
+        }
+        axios
+          .post(url,formData)
+          .then(response=>{
+            const token=response.data.access
+            localStorage.setItem('token',token)
+
+            // 更新过期时间
+            let mytime_gap=5*60*1000
+            const expiredTime=Date.now() + mytime_gap
+            localStorage.setItem('expiredTime',expiredTime)
+            this.$store.commit('setLogiStatus',true)
+          })
+          .catch(error=>{
+            console.log(error)
+            this.$store.commit('setLogiStatus',false)
+            localStorage.clear()
+          })
+      }
+      else {
         this.$store.commit('setLogiStatus',false)
+        localStorage.clear()
       }
 
     },
