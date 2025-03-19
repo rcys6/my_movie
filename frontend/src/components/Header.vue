@@ -88,8 +88,23 @@ export default{
     components:{ Category },
     data:function(){
       return{
-        keyword:''
+        keyword:'',
+        username:'',
       }
+    },
+
+    mounted(){
+      this.username = localStorage.getItem('username')
+
+      const curruntTime=Date.now()
+      const expiredTime=localStorage.getItem('expiredTime')
+
+      if(expiredTime > curruntTime) {
+        this.$store.commit('setLogiStatus',true)
+      }else {
+        this.$store.commit('setLogiStatus',false)
+      }
+
     },
 
     methods:{

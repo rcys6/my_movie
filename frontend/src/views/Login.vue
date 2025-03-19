@@ -82,14 +82,16 @@ export default  {
                     localStorage.setItem('refresh',refresh)
                     localStorage.setItem('username',username)
 
+
+                    localStorage.setItem('expiredTime',Date.now() + 1*60*1000)
+
                     showMessage('登录成功','nomal', ()=>{
                         this.$router.push({ name : 'home'})
                     })
-                    console.log(111)
                 })
 
                 .catch(error=>{
-                    const errorData=error.response.data
+                    const errorData=error.response.data;
                     const errrormessage=Object.values(errorData).flat();
 
                     for (let i=0;i<errrormessage.length;i++)
