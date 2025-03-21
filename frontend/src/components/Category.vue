@@ -59,7 +59,7 @@ export default {
     methods:{
         get_category_info(){
             axios
-                .get('api/category')
+                .get('/api/category')
                 .then(response=>{
                     this.info=response.data
                 })
