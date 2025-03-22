@@ -151,7 +151,7 @@ REST_FRAMEWORK = {
 
 from datetime import timedelta
 SIMPLE_JWT = {
-   'AUTH_HEADER_TYPES': ('JWT',),
+   'AUTH_HEADER_TYPES': ('JWT',), # 头部信息
    'ACCESS_TOKEN_LIFETIME':timedelta(minutes=60), # 配置访问令牌的生命周期
    'REFRESH_TOKEN_LIFETIME':timedelta(days=14),   # 刷新令牌的生命周期
 }
@@ -178,6 +178,10 @@ DJOSER = {
     'SEND_ACTIVATION_EMAIL':True,
     'ACTIVATION_URL':'/activate/{uid}/{token}',
     'SEND_CONFIRMATION_EMAIL':True,
+    'PASSWORD_RESET_CONFIRM_URL':'password_reset/{uid}/{token}',
+    'PASSWORD_RESET_CONFIRM_RETYPE':True,
+    'PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND':True,
+    'SET_PASSWORD_RETYPE':True,
 
 
     'SERIALIZERS':{

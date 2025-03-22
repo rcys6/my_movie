@@ -4,6 +4,10 @@ import MovieDetail from '../views/MovieDetail.vue'
 import Register from '../views/Register.vue'
 import ActivateEmail from '../views/ActivateEmail.vue'
 import Login from '../views/Login.vue'
+import forgetPassword from '../views/forgetPassword.vue'
+import resetPassword from '../views/resetPassword.vue'
+import Personal from '../views/Personal.vue'
+import changePassword from '../views/changePassword.vue'
 
 const routes = [
   {
@@ -34,6 +38,29 @@ const routes = [
     name: 'Login',
     component: Login
   },
+
+  {
+    path: '/reset_password',
+    name: 'forgetPassword',
+    component: forgetPassword
+  },
+  
+  {
+    path: '/password_reset/:uid/:token',
+    name: 'resetPassword',
+    component: resetPassword
+  },
+  {
+    path: '/personal',
+    name: 'Personal',
+    component: Personal
+  },
+  {
+    path: '/change_password',
+    name: 'changePassword',
+    component: changePassword
+  },
+
 
   {
     path: '/about',

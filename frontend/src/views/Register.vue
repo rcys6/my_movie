@@ -139,15 +139,12 @@ export default {
                 })
 
                 .catch(error=>{
-
                     const errorData=error.response.data
                     const errrormessage=Object.values(errorData).flat();
-
                     for (let i=0;i<errrormessage.length;i++)
                     {
                         showMessage(errrormessage[i])
                     }
-
                 })
         }
     }
