@@ -9,6 +9,7 @@ import resetPassword from '../views/resetPassword.vue'
 import Personal from '../views/Personal.vue'
 import changePassword from '../views/changePassword.vue'
 import strore from '../store/index.js'
+import store from '../store/index.js'
 
 const routes = [
   {
@@ -54,7 +55,10 @@ const routes = [
   {
     path: '/personal',
     name: 'Personal',
-    component: Personal
+    component: Personal ,
+    meta:{
+      requireLogin:true
+    }
   },
   {
     path: '/change_password',
@@ -81,6 +85,10 @@ const router = createRouter({
   routes
 })
 
+const token=localStorage.getItem('token')
+if (token) {
+  store.commit('setLogiStatus',true)
+}
 
 // 路由导航守卫
 router.beforeEach((to,from,next)=>{

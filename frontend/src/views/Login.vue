@@ -38,6 +38,7 @@
 <script>
 import showMessage from '@/utils/message';
 import axios from 'axios';
+import { toHandlers } from 'vue';
 
 export default  {
     name:'Login',
@@ -77,17 +78,23 @@ export default  {
                     const token=response.data.access
                     const refresh=response.data.refresh
                     const username=this.username
-                     
 
                     localStorage.setItem('token',token)
                     localStorage.setItem('refresh',refresh)
                     localStorage.setItem('username',username)
+                    this.$store.commit('setLogiStatus',true)
+
+                    const redirectAfterLogin = this.$route.query.jump
+                    const redirectUrl=redirectAfterLogin ? redirectAfterLogin : '/'
+
 
                     let mytime = 5 * 60 * 1000
                     localStorage.setItem('expiredTime',Date.now() + mytime)
 
                     showMessage('登录成功','nomal', ()=>{
-                        this.$router.push({ name : 'home'})
+                        this.$router.push({
+                           path: redirectUrl
+                          })
                     })
                 })
 
