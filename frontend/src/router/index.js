@@ -92,6 +92,11 @@ if (token) {
 
 // 路由导航守卫
 router.beforeEach((to,from,next)=>{
+  if(store.state.isLogin && (to.name === 'Login' || to.name === 'Register')){
+    next({name:'home'})
+  }
+
+
   if (to.matched.some(record => record.meta.requireLogin) && !strore.state.isLogin) {
     next({name:'Login',query:{jump:to.path}})
   } else {
