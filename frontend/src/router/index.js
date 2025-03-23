@@ -8,6 +8,7 @@ import forgetPassword from '../views/forgetPassword.vue'
 import resetPassword from '../views/resetPassword.vue'
 import Personal from '../views/Personal.vue'
 import changePassword from '../views/changePassword.vue'
+import strore from '../store/index.js'
 
 const routes = [
   {
@@ -58,7 +59,10 @@ const routes = [
   {
     path: '/change_password',
     name: 'changePassword',
-    component: changePassword
+    component: changePassword ,
+    meta:{
+      requireLogin:true
+    }
   },
 
 
@@ -76,5 +80,17 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
+
+
+// 路由导航守卫
+router.beforeEach((to,from,next)=>{
+  if (to.matched.some(record => record.meta.requireLogin) && !strore.state.isLogin) {
+    next({name:'Login',query:{jump:to.path}})
+  } else {
+    next()
+  }
+})
+
+
 
 export default router

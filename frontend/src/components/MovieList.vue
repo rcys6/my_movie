@@ -1,5 +1,5 @@
 <template>
-    <div class="flex items-center justify-center">
+    <div class="flex items-center justify-center bg-primary-300">
         <div class="w-full px-2" style="max-width:1440px;">
             <div id="movie-list" class="p-2 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
                 <!-- key 来提供排序提升 -->
@@ -25,7 +25,7 @@
                                 4k
                             </div>
                         </div>
-                        <p> {{ movie.movie_name }}({{movie.release_year}})</p>
+                        <p class="text-white"> {{ movie.movie_name }}({{movie.release_year}})</p>
                         <p class="text-sm text-primary-200">{{movie.language}}</p>
                     </a>
                 </div>
@@ -34,7 +34,10 @@
         </div>
     </div>
     <!-- 数据传入子组件 -->
-    <Page :info="info"/>
+    <div class="bg-primary-300">
+        <Page :info="info"/>
+    </div>
+    
 </template>
 
 <script>

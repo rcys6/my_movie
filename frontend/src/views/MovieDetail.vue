@@ -1,6 +1,6 @@
 <template>
     <Header/>
-    <div class="flex items-center justify-center">
+    <div class="flex items-center justify-center ">
         <div class="w-full px-2" style="max-width:1440px;">
             <div id="main" class="bg-primary-300 p-6 text-black">
                 <div class="flex rounded bg-white mx-4 py-6">
