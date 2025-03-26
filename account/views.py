@@ -3,6 +3,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated,IsAdminUser
 
 from movie.models import Movie
 from movie.serializers import MovieSerializer
@@ -12,6 +13,13 @@ from account.models import Profile
 class CollectViewSet(viewsets.ModelViewSet):
     queryset=Movie.objects.all()
     serializer_class=MovieSerializer
+    permission_classes = [ IsAuthenticated ]
+
+    # 只有管理员能用 put和patch方法
+    def get_permissions(self):
+        if self.request.method in [ 'PUT','PATCH']:
+            return [ IsAdminUser()]
+        return [IsAuthenticated()]
 
     # 展示以及收藏
     def list(self,request):

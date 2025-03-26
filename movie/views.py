@@ -6,10 +6,11 @@ from rest_framework import status
 from rest_framework import generics,mixins,viewsets
 from django_filters import rest_framework as filters
 from rest_framework.decorators import api_view
-
+from rest_framework.permissions import IsAdminUser
 
 from .serializers import MovieListSerializer,MovieDetailSerializer,MovieSerializer,CategorySerializer
 from .models import Movie,Category
+from .permision import IsAdminUserOrReadOnly
 
 # @api_view(['GET', 'POST'])
 # def movie_list(request):
@@ -97,7 +98,12 @@ class MovieViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.DjangoFilterBackend,)
     # 模糊查询
     filterset_class=MovieFilter
+    permission_classes = [ IsAdminUserOrReadOnly ]
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset=Category.objects.all()
     serializer_class=CategorySerializer
+    permission_classes = [ IsAdminUserOrReadOnly ]
+
+
+
