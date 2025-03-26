@@ -2,6 +2,7 @@ from djoser.serializers import UserCreateSerializer
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.models import User
+from account.models import Profile
 
 
 class CustomUniqueValidator(UniqueValidator):
@@ -18,3 +19,12 @@ class CustomUserCreateSerializer(UserCreateSerializer):
     class Meta:
         model=User
         fields =  ('id','username','email','password') 
+
+    def create(self,validated_data):
+        user=UserCreateSerializer.create(self,validated_data)
+
+        # 写入profile表
+        profile=Profile(user=user)
+        profile.save()
+        return user
+    

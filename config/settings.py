@@ -179,7 +179,7 @@ DJOSER = {
     'USER_ID_FIELD':'username',
     'USER_ID_FIELD':'email',
     'SEND_ACTIVATION_EMAIL':True,
-    'ACTIVATION_URL':'/activate/{uid}/{token}',
+    'ACTIVATION_URL':'activate/{uid}/{token}',
     'SEND_CONFIRMATION_EMAIL':True,
     'PASSWORD_RESET_CONFIRM_URL':'password_reset/{uid}/{token}',
     'PASSWORD_RESET_CONFIRM_RETYPE':True,
