@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import viewsets
 from rest_framework.response import Response
+from rest_framework.decorators import action
 
 from movie.models import Movie
 from movie.serializers import MovieSerializer
@@ -23,9 +24,9 @@ class CollectViewSet(viewsets.ModelViewSet):
     def create(self,request):
         user=request.user
         profile=Profile.objects.get(user=user)
-        moive_id=request.data['movie_id']
+        movie_id=request.data['movie_id']
         try:
-            movie=Movie.objects.get(id=moive_id)
+            movie=Movie.objects.get(id=movie_id)
             profile.movies.add(movie)
             return Response ({'message':'收藏成功'})
         except ObjectDoesNotExist:
@@ -46,4 +47,12 @@ class CollectViewSet(viewsets.ModelViewSet):
             return Response({'message':'电影信息不存在'})
         except:
             return Response({'message':'取消收藏失败'})
-
+        
+    # detail设置单一资源的
+    @action(detail=True,methods=['get']) # 自主定义接口
+    def is_collected(self,request,pk=None):
+        user=request.user
+        profile=Profile.objects.get(user=user)
+        movie=Movie.objects.get(id=pk)
+        is_collected=profile.movies.filter(id=movie.id).exists()
+        return Response({'is_collected':is_collected})

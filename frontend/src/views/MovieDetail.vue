@@ -8,9 +8,9 @@
                         <div class="" style="min-height: 259px; max-height: 300px;height: 274px;">
                         <img :src="movie.image_url" class="h-full w-full">
                         </div>
-                        <button v-on:click="collect_or_cancle(movie.id)" id="collect" class="copy text-white w-full px-4 py-1 mt-2 text-sm bg-blue-500 rounded border">
-                            添加收藏
-                            <!-- {{ collectMessage }} -->
+                        <button v-on:click="collect_or_cancle(movie.id)" id="collect" :class="collectStatus ? 'bg-gray-500' : 'bg-blue-500'"
+                        class="copy text-white w-full px-4 py-1 mt-2 text-sm bg-blue-500 rounded border">
+                            {{ collectMessage }}
                         </button>
                     </div>
                     <div id="info" data-movie-id="443">
@@ -72,6 +72,7 @@
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
 import axios from 'axios'
+import showMessage from '@/utils/message'
 
 export default{
     name : "MovieDetail",
@@ -79,23 +80,110 @@ export default{
 
     data:function(){
         return{
-            movie:{ }
+            movie:{ },
+            collectStatus:false,
+            collectMessage:'',
         }
     },
 
     mounted(){
         this.get_movie_info()
+
+        //判断用户是否登录
+        if (!this.$store.state.isLogin)
+        {
+            this.collectStatus=false
+            this.collectMessage='添加收藏'
+        }
+        else 
+        {
+            const movie_id=this.$route.params.id
+            this.get_collect_status(movie_id)
+        }
     },
 
     methods: {
         get_movie_info: function () {
-            
-        axios
-            .get('/api/movies/'+this.$route.params.id)
-            .then(response => (this.movie=response.data))
+            axios
+                .get('/api/movies/'+this.$route.params.id)
+                .then(response => (this.movie=response.data))
 
-        }
+        },
+
+        get_collect_status:function(movie_id)
+        {
+            let url='/api/collects/'+movie_id+'/is_collected/'
+            const token=localStorage.getItem('token')
+            axios
+                .get(url,{
+                    headers:{
+                        'Authorization':'JWT '+ token
+                    }
+                })
+                .then(response =>{
+                    this.collectStatus=response.data.is_collected
+                    if (this.collectStatus) {
+                        this.collectMessage='取消收藏'
+                    }
+                    else {
+                        this.collectMessage='添加收藏'
+                    }
+                })
+                
+        },
+
+        collect_or_cancle:function(movie_id){
+            if (!this.$store.state.isLogin)
+            {
+                showMessage('请先登录','error',()=>{
+                    this.$router.push({
+                    name:'Login'})
+                })
+            }
+            else {
+                this.collectStatus ? this.cancle_collect_movie(movie_id) : this.collect_movie(movie_id)
+            }
+        },
+
+        collect_movie:function(movie_id) {
+            let url='/api/collects/'
+            const token=localStorage.getItem('token')
+            axios
+                .post(url , {movie_id:movie_id} , {
+                    headers:{
+                        'Authorization':'JWT ' + token
+                    }
+                })
+                .then(response=>{
+                    this.collectStatus=true
+                    this.collectMessage='取消收藏'
+                    showMessage(message,'nomal')
+                })
+                .catch(error => {
+                    showMessage('收藏失败')
+                })
+        },
+
+        cancle_collect_movie:function(movie_id) {
+            let url='/api/collects/' + movie_id + '/'
+            const token=localStorage.getItem('token')
+            axios
+                .delete(url , {
+                    headers:{
+                        'Authorization':'JWT ' + token
+                    }
+                })
+                .then(response=>{
+                    this.collectStatus=false
+                    this.collectMessage='添加收藏'
+                    showMessage(message,'nomal')
+                })
+                .catch(error => {
+                    showMessage('取消收藏失败')
+                })
+        },
     }
-
 }
+
+
 </script>

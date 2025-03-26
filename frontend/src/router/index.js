@@ -8,7 +8,7 @@ import forgetPassword from '../views/forgetPassword.vue'
 import resetPassword from '../views/resetPassword.vue'
 import Personal from '../views/Personal.vue'
 import changePassword from '../views/changePassword.vue'
-import strore from '../store/index.js'
+import Collect from '../views/Collect.vue'
 import store from '../store/index.js'
 
 const routes = [
@@ -68,6 +68,14 @@ const routes = [
       requireLogin:true
     }
   },
+  {
+    path: '/collect',
+    name: 'Collect',
+    component: Collect ,
+    meta:{
+      requireLogin:true
+    }
+  },
 
 
   {
@@ -97,7 +105,7 @@ router.beforeEach((to,from,next)=>{
   }
 
 
-  if (to.matched.some(record => record.meta.requireLogin) && !strore.state.isLogin) {
+  if (to.matched.some(record => record.meta.requireLogin) && !store.state.isLogin) {
     next({name:'Login',query:{jump:to.path}})
   } else {
     next()
