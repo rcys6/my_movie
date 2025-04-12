@@ -157,7 +157,7 @@ export default{
                 .then(response=>{
                     this.collectStatus=true
                     this.collectMessage='取消收藏'
-                    showMessage(message,'nomal')
+                    showMessage(this.collectMessage,'nomal')
                 })
                 .catch(error => {
                     showMessage('收藏失败')
@@ -176,7 +176,7 @@ export default{
                 .then(response=>{
                     this.collectStatus=false
                     this.collectMessage='添加收藏'
-                    showMessage(message,'nomal')
+                    showMessage(this.collectMessage,'nomal')
                 })
                 .catch(error => {
                     showMessage('取消收藏失败')
