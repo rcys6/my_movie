@@ -1,4 +1,4 @@
-from djoser.serializers import UserCreateSerializer
+from djoser.serializers import UserCreateSerializer,UserSerializer
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.models import User
@@ -28,3 +28,13 @@ class CustomUserCreateSerializer(UserCreateSerializer):
         profile.save()
         return user
     
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = "__all__"
+
+
+class CustomSerializer(UserSerializer):
+    profile = ProfileSerializer(read_only=True)
+    class Meta(UserSerializer.Meta):
+        fields = (*UserSerializer.Meta.fields,'profile') # 原始的追加上profile

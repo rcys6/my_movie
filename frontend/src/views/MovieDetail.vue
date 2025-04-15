@@ -49,16 +49,19 @@
                 </div>
                 <div id="download_info" class="rounded bg-white mx-4 mt-4 py-6 "> 
                     <h1 class="text-lg mb-6 font-semibold px-6">网盘地址</h1>
-                    <ul v-if="movie.download_info" class="px-6">
-                        <li>
+                    <div v-if="movie.download_info" class="px-6">
+                        <div v-if="downloadInfo">
                             {{ movie.download_info }}
-                        </li>
-                    </ul>
-                    <ul  v-else class="px-6">
+                        </div>
+                        <div v-else class="flex justify-center items-center mx-6 rounded h-28 bg-gray-500">
+                            <button v-on:click="check_member_stats" id="check_member" class="rounded text-center bg-blue-500">查看网盘地址</button>
+                        </div>
+                    </div>
+                    <div  v-else class="px-6">
                         <li>
                             暂无网盘信息
                         </li>
-                    </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -83,6 +86,8 @@ export default{
             movie:{ },
             collectStatus:false,
             collectMessage:'',
+            downloadInfo:false,
+            userInfo:'',
         }
     },
 
@@ -182,6 +187,33 @@ export default{
                     showMessage('取消收藏失败')
                 })
         },
+
+        // 判断用户状态
+        check_member_stats()
+        {
+            if (!this.$store.state.isLogin)
+            {
+                showMessage('请先登录')
+                return
+            }
+            const accessToken = window.localStorage.getItem('token'); 
+            axios
+                .get('/api/users/me',{
+                    headers: {
+                        'Authorization': `JWT ${accessToken}` 
+                    }
+                })
+                
+                .then(response=>{
+                    this.userInfo = response.data
+                    if (this.userInfo.profile.is_upgrade){
+                        this.downloadInfo=true
+                    } else
+                    {
+                        alert('请购买会员卡')
+                    }
+                })
+        }
     }
 }
 
