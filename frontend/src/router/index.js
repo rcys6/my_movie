@@ -9,6 +9,7 @@ import resetPassword from '../views/resetPassword.vue'
 import Personal from '../views/Personal.vue'
 import changePassword from '../views/changePassword.vue'
 import Collect from '../views/Collect.vue'
+import MemberCard from '../views/MemberCard.vue'
 import store from '../store/index.js'
 
 const routes = [
@@ -77,6 +78,12 @@ const routes = [
     }
   },
 
+  {
+    path: '/memberCard',
+    name: 'memberCard',
+    component: MemberCard ,
+
+  },
 
   {
     path: '/about',

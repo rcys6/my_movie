@@ -28,11 +28,13 @@ router.register(r'collects',account_views.CollectViewSet,basename='collect')
 router.register(r'cards',trade_views.CardViewSet,basename='card')
 
 
+
 urlpatterns = [
     # path('api/movies/',include("movie.urls")),
     path('api/',include(router.urls)),
     path(r'api/', include('djoser.urls')),
     path(r'api/', include('djoser.urls.jwt')),
+    path(r'api/alipay/',trade_views.AlipayAPIView.as_view()),
 
     path('admin/', admin.site.urls),
     

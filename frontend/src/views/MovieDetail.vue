@@ -211,6 +211,9 @@ export default{
                     } else
                     {
                         alert('请购买会员卡')
+                        this.$router.push({
+                            name:'memberCard'
+                        })
                     }
                 })
         }
