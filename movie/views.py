@@ -4,13 +4,14 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import generics,mixins,viewsets
-from django_filters import rest_framework as filters
+
 from rest_framework.decorators import api_view
 from rest_framework.permissions import IsAdminUser
 
 from .serializers import MovieListSerializer,MovieDetailSerializer,MovieSerializer,CategorySerializer
 from .models import Movie,Category
 from .permision import IsAdminUserOrReadOnly
+from utils.filters import MovieFilter
 
 # @api_view(['GET', 'POST'])
 # def movie_list(request):
@@ -82,20 +83,11 @@ from .permision import IsAdminUserOrReadOnly
 #     def delete(self,request,*args,**kwargs):
 #         return self.destroy(request,*args,**kwargs)
 
-class MovieFilter(filters.FilterSet):
-    movie_name=filters.CharFilter(lookup_expr='icontains')
-    category_id=filters.NumberFilter()
-    region=filters.NumberFilter()
-
-    class Meta:
-        model=Movie
-        fields=['movie_name','category_id','region']
 
 
 class MovieViewSet(viewsets.ModelViewSet):
     queryset=Movie.objects.all()
     serializer_class=MovieSerializer
-    filter_backends = (filters.DjangoFilterBackend,)
     # 模糊查询
     filterset_class=MovieFilter
     permission_classes = [ IsAdminUserOrReadOnly ]

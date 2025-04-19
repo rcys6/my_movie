@@ -26,7 +26,7 @@ router.register(r'movies',views.MovieViewSet)
 router.register(r'category',views.CategoryViewSet)
 router.register(r'collects',account_views.CollectViewSet,basename='collect')
 router.register(r'cards',trade_views.CardViewSet,basename='card')
-
+router.register(r'orders',trade_views.OrderViewSet)
 
 
 urlpatterns = [

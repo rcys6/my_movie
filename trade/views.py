@@ -1,17 +1,20 @@
 from django.conf import settings
 from django.shortcuts import render
 from django.utils import timezone
+from django.db import transaction
 
+from rest_framework.permissions import IsAuthenticated,SAFE_METHODS
 from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from datetime import datetime, timedelta
 
 from .models import Card,Order
-from .serializer import CardSerialzer
+from .serializer import CardSerialzer,OrderSerialzer
 from .permision import IsAdminUserOrReadOnly
 from utils.error import TradeError,response_data
 from utils.common import get_random_code
+from utils.filters import OrderFilter
 from account.models import Profile
 from utils.zhifubao import AliPay
 
@@ -20,6 +23,17 @@ class CardViewSet(viewsets.ModelViewSet):
     queryset = Card.objects.all()
     serializer_class = CardSerialzer
     permission_classes = [IsAdminUserOrReadOnly] # 权限类
+
+class OrderViewSet(viewsets.ModelViewSet):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerialzer
+    filterset_class = OrderFilter
+
+    def get_permissions(self):
+        if self.request.method in SAFE_METHODS:
+            return [IsAuthenticated() ]
+        return [IsAdminUserOrReadOnly()]
+
 
 
 class AlipayAPIView(APIView):
@@ -37,6 +51,7 @@ class AlipayAPIView(APIView):
             # 创建订单
             uid = 'WdyuEUqDrAVAH63yPUSHY6'
             Order.objects.create(
+                # user = Profile.objects.get(uid=request.user), 
                 user = Profile.objects.get(pk=uid), 
                 order_sn = out_trade_no,
                 order_mount = card.card_price,
@@ -92,28 +107,27 @@ class AlipayCallbackAPIView(APIView):
             return Response('Error')
         print('全部验证通过')
 
-        try:
+        # 事务同步
+        with transaction.atomic():
             order.trade_no = params.get('trade_no')
             order.pay_status = params.get('trade_status')
             order.pay_time = timezone.now()
             order.save()
-        except Exception as e:
-            print(e)
         
-        uid = 'WdyuEUqDrAVAH63yPUSHY6'
-        # 改profile表
-        try:
+            uid = 'WdyuEUqDrAVAH63yPUSHY6'
+            # 改profile表
+           
             # profile = Profile.objects.get(uid=order.profile.uid)
             profile = Profile.objects.get(uid=uid)
             profile.is_upgrade = 1
             profile.upgrade_time = timezone.now()
             profile.upgrade_count +=1
-            profile.expire_time = timezone.now() + timedelta(days=order.card.duration)
+
+            # 如果会员未过期，在原来时间基础上再加会员卡时长
+            if not profile.expire_time or profile.expire_time < timezone.now():
+                profile.expire_time = timezone.now() + timedelta(days=order.card.duration)
+            else:
+                profile.expire_time = profile.expire_time + timedelta(days=order.card.duration)
             profile.save()
-        except Exception as e:
-            print(e)
-
-
-
-        
+            
         return Response('success')
