@@ -69,6 +69,7 @@ class AliPay():
         response = self.client.execute(request)
         return response
 
+    # 验签
     def verify(self, unsigned_string, sign):
         return verify_with_rsa(settings.ALIPAY_PUBLIC_KEY, bytes(unsigned_string,encoding='utf-8'), sign)
         

@@ -206,7 +206,12 @@ ALIPAY_APP_PRIVATE_KEY='MIIEogIBAAKCAQEAgSnDN5arK6aZsMLBRClaHvu8+n3fIvaoW8RQbisP
 # 公钥
 ALIPAY_PUBLIC_KEY='MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3jtiUX+MOO9yV7ixlxPOpx1+CSJXXzb/hKLLonI+yTvUpLPKPG3E//TFqfg7537s7O25aCot54ViJMTOzIFBX+5MPx4Wi5zMyMtno7P91fLjVsmzO/etZxUk85pJFiGJd8FWjftBSwp/bU1p7dki3VDo+vTYbIaEXtoW4+ZV7Y1/GW2LX9Olh8Bqq+rNhcA8zzZhJPtzdlcybSBDWWA3ZXUEeopovadzDwdr6Yz14eESFiiRmZCkEgKq80bQb5T30+ftCI3tSsnIR1w61Uy9JMoC3kfrJLHxD+NB4Hv7ZK0JQmmptALEMRWnCVgqGG35+X0k9Qw6U+05heGXhtbMkwIDAQAB'
 
+# return url
+ALIPAY_RETURN_URL = 'http://3efa2efa.r30.cpolar.top/orders/'
 
-ALIPAY_RETURN_URL = 'https://a346-36-48-46-105.ngrok-free.app/order_list/'
-ALIPAY_NOTIFY_URL = 'https://a346-36-48-46-105.ngrok-free.app/callback/'
+# notify url
+ALIPAY_NOTIFY_URL = 'http://3efa2efa.r30.cpolar.top/api/callback/'
+
+#seller_id
+ALIPAY_SELLER_ID = '2088721065226131'
 
