@@ -66,6 +66,9 @@
                     <a href="/orders">我的订单</a>
                   </li>
                   <li class="plx-2 py-2">
+                    <a href="/memberCard">会员卡</a>
+                  </li>
+                  <li class="plx-2 py-2">
                     <router-link to="/" v-on:click.prevent="logout()">退出</router-link>
                   </li>
                 </ul>
