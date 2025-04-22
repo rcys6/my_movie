@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.utils import timezone
 from django.db import transaction
@@ -46,21 +47,31 @@ class AlipayAPIView(APIView):
             return Response(response_data(*TradeError.CardParamError))
 
         out_trade_no = "pay" + datetime.now().strftime("%Y%m%d%H%M%S") + get_random_code(4)
-
-        try:
-            # 创建订单
-            uid = 'WdyuEUqDrAVAH63yPUSHY6'
-            Order.objects.create(
-                # user = Profile.objects.get(uid=request.user), 
-                user = Profile.objects.get(pk=uid), 
-                order_sn = out_trade_no,
-                order_mount = card.card_price,
-                card = card,
-                pay_time = timezone.now()
-            )
-            
-        except:
-            return Response(response_data(*TradeError.OrderCreateError))
+        order_sn=request.GET.get('order_sn',None)
+        if not order_sn:
+            try:
+                # 创建订单
+                uid = 'WdyuEUqDrAVAH63yPUSHY6'
+                
+                Order.objects.create(
+                    # profile = Profile.objects.get(user=request.user),
+                    profile = Profile.objects.get(pk=uid), 
+                    order_sn = out_trade_no,
+                    order_mount = card.card_price,
+                    card = card,
+                    pay_time = timezone.now()
+                )
+                
+            except:
+                return Response(response_data(*TradeError.OrderCreateError))
+        else:
+            try:
+                order=Order.objects.get(order_sn=order_sn)
+                if order.pay_status !='PAYING':
+                    return Response(response_data(*TradeError.OrderStatusError))
+                out_trade_no=order_sn
+            except:
+                return Response(response_data(*TradeError.OrderStatusError))
             
         #调用支付宝
         try:
@@ -113,12 +124,12 @@ class AlipayCallbackAPIView(APIView):
             order.pay_status = params.get('trade_status')
             order.pay_time = timezone.now()
             order.save()
-        
+
             uid = 'WdyuEUqDrAVAH63yPUSHY6'
             # 改profile表
            
-            # profile = Profile.objects.get(uid=order.profile.uid)
-            profile = Profile.objects.get(uid=uid)
+            profile = Profile.objects.get(uid=order.profile.uid)
+            # profile = Profile.objects.get(uid=order.user.uid)
             profile.is_upgrade = 1
             profile.upgrade_time = timezone.now()
             profile.upgrade_count +=1
@@ -131,3 +142,4 @@ class AlipayCallbackAPIView(APIView):
             profile.save()
             
         return Response('success')
+    

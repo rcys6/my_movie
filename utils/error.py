@@ -38,6 +38,7 @@ class TradeError(object):
     AlipayRequestError = (400002, '支付宝页面请求错误')
     OrderCreateError=(40003,'订单创建失败')
     PayRequestError=(40004,'支付请求失败')
+    OrderStatusError=(40005,'订单支付状态错误')
 
 
 class MovieError(object):

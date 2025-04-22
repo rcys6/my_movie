@@ -6,7 +6,7 @@ from .models import Card,Order
 class CardSerialzer(serializers.ModelSerializer):
     class Meta:
         model = Card
-        fields = ['card_name','card_price','info','duration']
+        fields = ['id','card_name','card_price','info','duration']
 
 
 class OrderSerialzer(serializers.ModelSerializer):

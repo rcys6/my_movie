@@ -10,6 +10,7 @@ import Personal from '../views/Personal.vue'
 import changePassword from '../views/changePassword.vue'
 import Collect from '../views/Collect.vue'
 import MemberCard from '../views/MemberCard.vue'
+import Orders from '../views/Orders'
 import store from '../store/index.js'
 
 const routes = [
@@ -82,6 +83,16 @@ const routes = [
     path: '/memberCard',
     name: 'memberCard',
     component: MemberCard ,
+
+  },
+
+  {
+    path: '/orders',
+    name: 'Orders',
+    component: Orders ,
+    meta:{
+      requireLogin:true
+    }
 
   },
 

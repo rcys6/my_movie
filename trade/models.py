@@ -32,7 +32,7 @@ class Order(models.Model):
         ("wechat", "微信"),
     )
 
-    user = models.ForeignKey(Profile, related_name='orders', to_field='uid',on_delete=models.CASCADE, verbose_name="用户")
+    profile = models.ForeignKey(Profile, related_name='orders', to_field='uid',on_delete=models.CASCADE, verbose_name="用户")
     # 禁止反向
     card = models.ForeignKey(Card, related_name='+', on_delete=models.DO_NOTHING, verbose_name='会员卡')
     #订单号唯一
